@@ -19,10 +19,10 @@ import org.json.JSONException;
 public class NotificationPlugin extends CordovaPlugin {
 
     private static final String ACTION_TEST = "show_notification_test";
-    private static final int ID_TEST=1;
+    private int ID_TEST=101;
 
     private static final String ACTION_CUSTOM = "show_notification_custom";
-    private static final int ID_CUSTOM=2;
+    private int ID_CUSTOM=202;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -30,7 +30,7 @@ public class NotificationPlugin extends CordovaPlugin {
 
         if (ACTION_TEST.equals(action)) {
             //弹出默认通知
-            nm.notify(ID_TEST,buildNotification("测试标题","测试内容","通知来啦"));
+            nm.notify(++ID_TEST,buildNotification("测试标题","测试内容","通知来啦"));
             return true;
         }
         if(ACTION_CUSTOM.equals(action)){
@@ -38,7 +38,7 @@ public class NotificationPlugin extends CordovaPlugin {
             String content=args.getString(1);
             String firstTip=args.getString(2);
 
-            nm.notify(ID_CUSTOM,buildNotification(title,content,firstTip));
+            nm.notify(++ID_CUSTOM,buildNotification(title,content,firstTip));
             return true;
 
         }
@@ -49,7 +49,9 @@ public class NotificationPlugin extends CordovaPlugin {
         PendingIntent pendingIntent = PendingIntent.getActivity(cordova.getActivity(), 1, new Intent(), flags);
         return pendingIntent;
     }
-
+	/**
+	*构建通知栏
+	*/
     private Notification buildNotification(String title ,String content,String firstTip){
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity());
         mBuilder.setContentTitle(title)//设置通知栏标题
